@@ -1,0 +1,41 @@
+# Claude
+.claude/
+.playwright-mcp/
+*.png
+*.jpg
+*.jsonl
+
+# Node
+frontend/node_modules/
+frontend/dist/
+backend/node_modules/
+backend/package.json
+backend/package-lock.json
+
+# Java
+backend/target/
+backend/*.jar
+backend/*.war
+*.class
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Nginx
+nginx/logs/
+nginx/temp/
+nginx/*.zip
+
+# Env
+.env
+.env.local

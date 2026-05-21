@@ -1,0 +1,244 @@
+/* ===== 地府生死簿 — 古旧阴司风格 ===== */
+:root {
+  --blood: #7a0000;
+  --blood-deep: #3d0000;
+  --blood-bright: #a01020;
+  --gold: #c9a84c;
+  --gold-pale: #8b7a50;
+  --ink: #0d0a08;
+  --ink-light: #161210;
+  --parchment: #1a1510;
+  --parchment-dark: #110d08;
+  --bone: #c4b5a0;
+  --bone-dim: #8a7a68;
+  --ash: #3a3030;
+  --smoke: rgba(255,255,255,0.025);
+  --fog: rgba(122,0,0,0.04);
+  --ember: rgba(201,168,76,0.08);
+  --font-display: 'ZCOOL XiaoWei', 'STKaiti', 'KaiTi', 'Noto Serif SC', serif;
+  --font-body: 'Noto Serif SC', 'STSong', 'SimSun', 'Songti SC', serif;
+}
+
+html {
+  font-size: 16px;
+  background: var(--ink);
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Noto Serif SC', 'STSong', 'SimSun', 'Songti SC', serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #b0a898;
+  background: var(--ink);
+  /* 多层纹理叠加：血斑 + 墨渍 + 纸色渐变 */
+  background-image:
+    radial-gradient(ellipse at 15% 70%, rgba(100,0,0,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 25%, rgba(50,30,20,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(30,20,10,0.08) 0%, transparent 80%),
+    radial-gradient(ellipse at 90% 90%, rgba(20,10,5,0.2) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+/* ===== 入场浮现 ===== */
+@keyframes apparition {
+  from { opacity: 0; transform: translateY(12px); filter: blur(3px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* 鬼火般的间歇闪烁 */
+@keyframes candleFlicker {
+  0%, 100% { text-shadow: 0 0 6px rgba(201,168,76,0.25), 0 0 14px rgba(180,120,30,0.08); }
+  33% { text-shadow: 0 0 12px rgba(201,168,76,0.45), 0 0 22px rgba(200,130,40,0.15); }
+  66% { text-shadow: 0 0 4px rgba(201,168,76,0.15), 0 0 8px rgba(150,100,20,0.04); }
+}
+
+/* 血滴 — 更有机的下落 */
+@keyframes bloodDrip {
+  0% { transform: translateY(-120%); opacity: 0; }
+  8% { opacity: 0; }
+  15% { opacity: 0.55; }
+  70% { opacity: 0.4; }
+  100% { transform: translateY(105vh); opacity: 0; }
+}
+
+/* 纸张呼吸 */
+@keyframes parchmentBreathe {
+  0%, 100% { box-shadow: 0 0 18px 2px rgba(139,0,0,0.08), inset 0 0 30px rgba(0,0,0,0.15); }
+  50% { box-shadow: 0 0 30px 4px rgba(139,0,0,0.18), inset 0 0 40px rgba(0,0,0,0.25); }
+}
+
+/* 血迹扩散 */
+@keyframes bloodSpread {
+  0% { background-size: 0% 100%; }
+  100% { background-size: 100% 100%; }
+}
+
+/* ===== 全局半透明噪点覆盖 — 由 index.html 中的 .noise-overlay 提供 ===== */
+
+/* ===== 标题样式 ===== */
+.page-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--gold);
+  letter-spacing: 5px;
+  font-weight: 400;
+  animation: candleFlicker 4s ease-in-out infinite;
+  text-shadow: 0 0 8px rgba(201,168,76,0.3), 0 2px 4px rgba(0,0,0,0.6);
+  position: relative;
+  display: inline-block;
+}
+/* 标题下的血线装饰 */
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(122,0,0,0.5) 0%, rgba(122,0,0,0.1) 60%, transparent 100%);
+}
+
+.page-desc {
+  font-size: 13px;
+  color: #6a5a50;
+  letter-spacing: 3px;
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* 页面顶栏装饰 */
+.page-header {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 24px;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--blood-bright), var(--blood-deep));
+  box-shadow: 0 0 10px rgba(160,16,32,0.5), 0 0 3px rgba(201,168,76,0.2);
+  animation: candleFlicker 2.5s ease-in-out infinite;
+}
+
+/* ===== 卡片翻新 — 羊皮纸质感 ===== */
+.content-card, .chart-card, .stat-card {
+  background:
+    linear-gradient(180deg, var(--parchment) 0%, var(--parchment-dark) 100%);
+  border: 1px solid rgba(122,0,0,0.18);
+  border-radius: 6px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  animation: parchmentBreathe 6s ease-in-out infinite;
+}
+/* 卡片内墨渍斑点 */
+.content-card::before, .chart-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(60,30,20,0.25) 0%, transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(40,20,10,0.2) 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 50%, rgba(139,119,90,0.03) 0%, transparent 70%);
+}
+
+/* ===== 表格 ===== */
+.el-table {
+  font-size: 15px;
+  --el-table-border-color: rgba(122,0,0,0.12);
+}
+.dark-table :deep(.table-header) {
+  background: linear-gradient(180deg, #0d0a08, #161210) !important;
+  color: var(--gold) !important;
+  border-bottom: 2px solid rgba(122,0,0,0.35) !important;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: 13px;
+}
+.dark-table :deep(.table-cell) {
+  background: rgba(26,21,16,0.85);
+  color: #b0a898;
+}
+.dark-table :deep(.el-table__row:hover td) {
+  background: rgba(122,0,0,0.06) !important;
+}
+/* 表格行交错的条纹 — 像竹简/卷轴 */
+.dark-table :deep(.el-table__row:nth-child(even) td) {
+  background: rgba(22,18,14,0.85);
+}
+.dark-table :deep(.el-table__row:nth-child(even):hover td) {
+  background: rgba(122,0,0,0.08) !important;
+}
+
+/* ===== 按钮 ===== */
+.el-button {
+  font-size: 15px;
+  letter-spacing: 2px;
+  border-radius: 3px;
+  transition: all 0.25s;
+}
+.el-button:hover {
+  transform: translateY(-1px);
+}
+
+/* ===== 菜单 ===== */
+.el-menu-item {
+  font-size: 15px;
+  letter-spacing: 2px;
+  transition: all 0.25s;
+}
+.el-menu-item:hover {
+  text-shadow: 0 0 8px var(--gold);
+}
+
+/* ===== 对话框 — 血迹边框 ===== */
+.el-dialog__title {
+  font-size: 17px;
+  color: var(--gold);
+}
+
+/* ===== 表单标签 ===== */
+.el-form-item__label {
+  font-size: 15px;
+  color: var(--bone-dim);
+}
+
+/* ===== 统计数字 ===== */
+.stat-number {
+  font-size: 34px;
+}
+
+/* ===== 输入框血迹聚焦 ===== */
+.el-input__wrapper:focus-within {
+  box-shadow: 0 0 0 1px var(--blood) inset !important;
+}
+.el-select .el-input__wrapper:focus-within {
+  box-shadow: 0 0 0 1px var(--blood) inset !important;
+}
+
+/* ===== 自定义滚动条 — 骨质风格 ===== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--blood-deep), var(--blood));
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--blood-bright); }
+
+/* ===== 全局 cursor ===== */
+body { cursor: default; }
+a, button, .el-button, .el-menu-item, [role="button"], input, select, textarea {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='3' fill='none' stroke='%23a01020' stroke-width='1'/%3E%3Cline x1='8' y1='11' x2='8' y2='14' stroke='%23a01020' stroke-width='1'/%3E%3C/svg%3E") 8 8, pointer;
+}
+
+/* ===== Tag 组件 ===== */
+.el-tag { font-size: 12px; letter-spacing: 1px; }
