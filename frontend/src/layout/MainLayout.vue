@@ -52,11 +52,7 @@
         </el-dropdown>
       </el-header>
       <el-main style="background: var(--ink);">
-        <router-view v-slot="{ Component }">
-          <transition name="ghost" mode="out-in">
-            <component :is="Component" />
-          </transition>
-        </router-view>
+        <router-view />
       </el-main>
     </el-container>
   </el-container>
@@ -154,10 +150,4 @@ onUnmounted(() => {
 .logo-icon { display: block; width: 24px; height: 28px; position: relative; flex-shrink: 0; }
 .logo-icon::before { content: ''; position: absolute; top: 0; left: 4px; width: 16px; height: 16px; background: var(--gold, #c9a84c); border-radius: 50% 50% 30% 30%; box-shadow: 0 0 10px rgba(201,168,76,0.5); }
 .logo-icon::after { content: ''; position: absolute; bottom: 2px; left: 2px; width: 20px; height: 10px; border: 1.5px solid var(--gold, #c9a84c); border-top: none; border-radius: 0 0 30% 30%; box-shadow: 0 0 6px rgba(201,168,76,0.3); }
-
-/* ghost transition for nested router-view */
-.ghost-enter-active { transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1); }
-.ghost-leave-active { transition: all 0.18s cubic-bezier(0.55, 0.06, 0.68, 0.19); }
-.ghost-enter-from { opacity: 0; transform: translateY(14px); filter: blur(3px); }
-.ghost-leave-to { opacity: 0; transform: translateY(-6px); filter: blur(2px); }
 </style>
