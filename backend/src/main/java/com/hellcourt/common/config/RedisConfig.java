@@ -43,8 +43,6 @@ public class RedisConfig {
         configs.put("judgment", defaultConfig.entryTtl(Duration.ofMinutes(10)));
         configs.put("review", defaultConfig.entryTtl(Duration.ofMinutes(10)));
         configs.put("rebirth", defaultConfig.entryTtl(Duration.ofMinutes(10)));
-        configs.put("demon", defaultConfig.entryTtl(Duration.ofHours(1)));
-        configs.put("hellLayer", defaultConfig.entryTtl(Duration.ofHours(1)));
 
         return RedisCacheManager.builder(factory)
                 .cacheDefaults(defaultConfig)

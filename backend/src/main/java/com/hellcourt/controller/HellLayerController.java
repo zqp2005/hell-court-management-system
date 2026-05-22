@@ -1,8 +1,9 @@
 package com.hellcourt.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.hellcourt.common.result.ApiResponse;
 import com.hellcourt.entity.HellLayer;
-import com.hellcourt.service.HellLayerService;
+import com.hellcourt.mapper.HellLayerMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,12 @@ import java.util.List;
 @RequestMapping("/api/hell-layers")
 @RequiredArgsConstructor
 public class HellLayerController {
-    private final HellLayerService hellLayerService;
+    private final HellLayerMapper hellLayerMapper;
 
     @GetMapping
     @Operation(summary = "查询全部十八层地狱")
     public ApiResponse<List<HellLayer>> list() {
-        return ApiResponse.success(hellLayerService.listAll());
+        return ApiResponse.success(hellLayerMapper.selectList(
+                new LambdaQueryWrapper<HellLayer>().orderByAsc(HellLayer::getLayerNum)));
     }
 }
