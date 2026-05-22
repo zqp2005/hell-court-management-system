@@ -1,23 +1,20 @@
 <template>
   <div class="login-scene" @mousemove="onMouse" @mouseleave="onLeave">
-    <!-- ====== 背景场景层 ====== -->
+    <!-- ====== 背景场景 ====== -->
     <div class="scene-bg">
       <div class="blood-moon"></div>
       <div class="mountains">
         <span class="mt mt-1"></span><span class="mt mt-2"></span>
         <span class="mt mt-3"></span><span class="mt mt-4"></span>
       </div>
-      <div class="ground-fog"></div>
-      <div class="ground-fog fog-2"></div>
-      <!-- 浮灰 -->
+      <div class="ground-fog"></div><div class="ground-fog fog-2"></div>
       <span v-for="i in 40" :key="'e'+i" class="ember"
-        :style="{ left: ((i*179+31)%96)+'%', animationDelay: (i*0.35)+'s', animationDuration: (6+(i*0.4)%8)+'s', width: (1.5+(i%3)*1)+'px', height: (1.5+(i%3)*1)+'px', opacity: 0.15+(i%4)*0.1 }"></span>
-      <!-- 远处鬼火 -->
-      <span v-for="i in 6" :key="'w'+i" class="will-o-wisp"
-        :style="{ left: (10+i*13)+'%', bottom: (8+i*3)+'%', animationDelay: (i*1.2)+'s', animationDuration: (3+i*0.8)+'s' }"></span>
+        :style="{ left: ((i*179+31)%96)+'%', animationDelay: (i*0.35)+'s', animationDuration: (6+(i*0.4)%8)+'s', width: (1.5+(i%3)*1)+'px', height: (1.5+(i%3)*1)+'px', opacity: 0.12+(i%4)*0.08 }"></span>
+      <span v-for="i in 8" :key="'w'+i" class="wisp"
+        :style="{ left: (5+i*11)+'%', bottom: (5+i*4)+'%', animationDelay: (i*1.5)+'s', animationDuration: (3+i*0.7)+'s' }"></span>
     </div>
 
-    <!-- ====== 鬼怪层（保留原有的四个 CSS 鬼差） ====== -->
+    <!-- ====== 鬼怪 ====== -->
     <div class="ghost-char char-hei" ref="charEls" data-idx="0">
       <div class="gc-body" ref="bodyEls">
         <div class="gc-head hei-head"><div class="hei-hat"></div><div class="gc-eyes"><span class="gc-pupil gold-pupil" ref="pupilEls"></span><span class="gc-pupil gold-pupil" ref="pupilEls"></span></div><div class="hei-mouth"></div></div>
@@ -26,7 +23,6 @@
       <span class="gc-name">黑无常</span><span class="gc-fire"></span>
       <span v-for="m in 4" :key="'hm'+m" class="gc-mist" :style="{ left: ((m*33+10)%100)+'%', top: ((m*40+20)%100)+'%', animationDelay: (m*0.5)+'s', width: (20+m*8)+'px', height: (25+m*10)+'px' }"></span>
     </div>
-
     <div class="ghost-char char-bai" ref="charEls" data-idx="1">
       <div class="gc-body" ref="bodyEls">
         <div class="gc-head bai-head"><div class="bai-hat"></div><div class="gc-eyes"><span class="gc-pupil dark-pupil" ref="pupilEls"></span><span class="gc-pupil dark-pupil" ref="pupilEls"></span></div><div class="bai-mouth"></div></div>
@@ -35,7 +31,6 @@
       <span class="gc-name">白无常</span><span class="gc-fire"></span>
       <span v-for="m in 4" :key="'bm'+m" class="gc-mist" :style="{ left: ((m*37+5)%100)+'%', top: ((m*35+15)%100)+'%', animationDelay: (m*0.6)+'s', width: (18+m*7)+'px', height: (22+m*9)+'px' }"></span>
     </div>
-
     <div class="ghost-char char-judge" ref="charEls" data-idx="2">
       <div class="gc-body" ref="bodyEls">
         <div class="gc-head judge-head"><div class="judge-hat"></div><div class="gc-eyes"><span class="gc-pupil gold-pupil" ref="pupilEls"></span><span class="gc-pupil gold-pupil" ref="pupilEls"></span></div><div class="judge-beard"></div></div>
@@ -44,7 +39,6 @@
       <span class="gc-name">判 官</span><span class="gc-fire"></span>
       <span v-for="m in 4" :key="'jm'+m" class="gc-mist" :style="{ left: ((m*29+20)%100)+'%', top: ((m*45+10)%100)+'%', animationDelay: (m*0.55)+'s', width: (22+m*6)+'px', height: (28+m*8)+'px' }"></span>
     </div>
-
     <div class="ghost-char char-imp" ref="charEls" data-idx="3">
       <div class="gc-body" ref="bodyEls">
         <div class="gc-head imp-head"><div class="imp-horns"><span class="imp-horn imp-hl"></span><span class="imp-horn imp-hr"></span></div><div class="gc-eyes"><span class="gc-pupil imp-pupil" ref="pupilEls"></span><span class="gc-pupil imp-pupil" ref="pupilEls"></span></div><div class="imp-grin"></div></div>
@@ -54,57 +48,83 @@
       <span v-for="m in 4" :key="'im'+m" class="gc-mist" :style="{ left: ((m*31+15)%100)+'%', top: ((m*42+10)%100)+'%', animationDelay: (m*0.45)+'s', width: (16+m*6)+'px', height: (20+m*8)+'px' }"></span>
     </div>
 
-    <!-- ====== 石碑登录卡片 ====== -->
-    <div class="tablet-layer">
-      <div class="tablet-shadow"></div>
-      <div class="stone-tablet">
-        <!-- 石碑顶部破损 -->
-        <div class="tablet-break-top"></div>
-        <!-- 石碑表面纹理层 -->
-        <div class="tablet-surface">
-          <!-- 碑额 -->
-          <div class="tablet-header">
-            <div class="tablet-seal"></div>
-            <h1 class="tablet-title">
-              <span class="title-char" v-for="(c, i) in '地府生死簿'" :key="i" :style="{ animationDelay: i*0.08+'s' }">{{ c }}</span>
-            </h1>
-            <div class="tablet-sub">—— 冥 书 石 契 ——</div>
-          </div>
-
-          <!-- 碑文表单 -->
-          <el-form ref="formRef" :model="form" :rules="rules" class="tablet-form">
-            <div class="tablet-field">
-              <label class="field-rune">名</label>
-              <div class="field-input-zone">
-                <el-input v-model="form.username" placeholder="判官提笔 · 录入名讳"
-                  @focus="focused='name'" @blur="focused=null" />
-                <span class="carve-line" v-show="focused==='name'||form.username"></span>
-              </div>
-            </div>
-
-            <div class="tablet-field">
-              <label class="field-rune">印</label>
-              <div class="field-input-zone">
-                <el-input v-model="form.password" type="password" placeholder="阎王御印 · 密令通行"
-                  show-password @focus="focused='pass'" @blur="focused=null" @keyup.enter="doLogin" />
-                <span class="carve-line" v-show="focused==='pass'||form.password"></span>
-              </div>
-            </div>
-
-            <button type="button" class="stone-btn" :class="{ pressed: clicked }" :disabled="loading" @click="doLogin">
-              <span class="btn-carve">踏 入 地 府</span>
-              <span class="btn-crack"></span>
-            </button>
-          </el-form>
-
-          <p class="tablet-foot">十殿阎罗 · 森严戒备 · 生人勿入</p>
+    <!-- ====== 石书登录卡片 ====== -->
+    <div class="book-layer">
+      <div class="book-shadow"></div>
+      <!-- 石书主体 -->
+      <div class="stone-book">
+        <!-- 书脊 — 金属装订 -->
+        <div class="book-spine">
+          <span class="spine-rivet" v-for="i in 3" :key="'rv'+i"></span>
         </div>
-        <!-- 石碑底部缺损 -->
-        <div class="tablet-break-bottom"></div>
+
+        <!-- 左侧石页 — 装饰页 -->
+        <div class="stone-page page-left">
+          <div class="page-blood-stain bs-1"></div>
+          <div class="page-blood-stain bs-2"></div>
+          <div class="page-crack cr-1"></div>
+          <div class="page-crack cr-2"></div>
+          <div class="page-texture"></div>
+          <!-- 左页铭文 -->
+          <div class="left-inscription">
+            <span class="insc-char" v-for="(c,i) in '陰陽生死'" :key="i" :style="{ animationDelay: i*0.1+'s' }">{{ c }}</span>
+          </div>
+          <div class="left-inscription insc-2">
+            <span class="insc-char" v-for="(c,i) in '簿'" :key="'b'+i" :style="{ animationDelay: (i+6)*0.1+'s' }">{{ c }}</span>
+          </div>
+          <!-- 血手印 -->
+          <div class="blood-handprint"></div>
+        </div>
+
+        <!-- 右侧石页 — 登录表单 -->
+        <div class="stone-page page-right">
+          <div class="page-blood-stain bs-3"></div>
+          <div class="page-crack cr-3"></div>
+          <div class="page-texture"></div>
+
+          <div class="page-content">
+            <!-- 页眉 -->
+            <div class="page-header-area">
+              <div class="seal-mark"></div>
+              <h1 class="book-title">
+                <span class="bt-char" v-for="(c,i) in '地府生死簿'" :key="i" :style="{ animationDelay: i*0.1+'s' }">{{ c }}</span>
+              </h1>
+              <div class="book-sub">—— 冥 契 石 书 ——</div>
+            </div>
+
+            <!-- 表单 -->
+            <el-form ref="formRef" :model="form" :rules="rules" class="book-form">
+              <div class="stone-field">
+                <span class="sf-rune">諱</span>
+                <div class="sf-input">
+                  <el-input v-model="form.username" placeholder="录入名讳 · 判官提笔"
+                    @focus="focused='name'" @blur="focused=null" />
+                  <span class="sf-carve" v-show="focused==='name'||form.username"></span>
+                </div>
+              </div>
+
+              <div class="stone-field">
+                <span class="sf-rune">印</span>
+                <div class="sf-input">
+                  <el-input v-model="form.password" type="password" placeholder="密令通行 · 阎王御印"
+                    show-password @focus="focused='pass'" @blur="focused=null" @keyup.enter="doLogin" />
+                  <span class="sf-carve" v-show="focused==='pass'||form.password"></span>
+                </div>
+              </div>
+
+              <button type="button" class="blood-seal-btn" :class="{ pressed: clicked }" :disabled="loading" @click="doLogin">
+                <span class="bsb-text">踏 入 地 府</span>
+                <span class="bsb-blood"></span>
+              </button>
+            </el-form>
+
+            <p class="page-foot">十 殿 阎 罗 · 森 严 戒 备 · 生 人 勿 入</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 左下竖排铭文 -->
+    <!-- 左下竖排 -->
     <div class="vert-seal">
       <span v-for="c in '陰司監錄'" :key="c" class="vs-ch">{{ c }}</span>
       <span class="vs-dot">·</span>
@@ -132,7 +152,6 @@ const rules = {
   password: [{ required: true, message: '需验证御印方可通行', trigger: 'blur' }]
 }
 
-// 鼠标跟踪
 let target = { x: -999, y: -999 }
 let smooth = { x: -999, y: -999 }
 let raf = null
@@ -142,45 +161,33 @@ function onLeave() { target.x = -999; target.y = -999 }
 
 function track() {
   if (target.x < 0) {
-    smooth.x += (-999 - smooth.x) * 0.04
-    smooth.y += (-999 - smooth.y) * 0.04
+    smooth.x += (-999 - smooth.x) * 0.04; smooth.y += (-999 - smooth.y) * 0.04
   } else {
-    smooth.x += (target.x - smooth.x) * 0.2
-    smooth.y += (target.y - smooth.y) * 0.2
+    smooth.x += (target.x - smooth.x) * 0.2; smooth.y += (target.y - smooth.y) * 0.2
   }
-  const isAway = target.x < 0
   const w = window.innerWidth, h = window.innerHeight
-  const mx = isAway ? w * 0.45 : smooth.x
-  const my = isAway ? h * 0.45 : smooth.y
+  const mx = target.x < 0 ? w * 0.45 : smooth.x
+  const my = target.x < 0 ? h * 0.45 : smooth.y
 
   document.querySelectorAll('.ghost-char').forEach((charEl) => {
     const bodyEl = charEl.querySelector('.gc-body')
     if (!bodyEl) return
     const rect = charEl.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height * 0.35
+    const cx = rect.left + rect.width / 2, cy = rect.top + rect.height * 0.35
     const dx = mx - cx, dy = my - cy
     const dist = Math.sqrt(dx * dx + dy * dy)
     const angle = Math.atan2(dy, dx) * (180 / Math.PI)
-    const influence = Math.min(dist / 250, 1)
-    bodyEl.style.transform = `rotate(${Math.max(-50, Math.min(50, angle)) * influence}deg) translate(${(dx/(dist||1))*influence*4}px, ${(dy/(dist||1))*influence*2}px)`
+    const inf = Math.min(dist / 250, 1)
+    bodyEl.style.transform = `rotate(${Math.max(-50,Math.min(50,angle))*inf}deg) translate(${(dx/(dist||1))*inf*4}px,${(dy/(dist||1))*inf*2}px)`
     charEl.querySelectorAll('.gc-pupil').forEach(p => {
-      p.style.transform = `translate(${(dx/(dist||1))*5*influence}px, ${(dy/(dist||1))*5*influence}px)`
+      p.style.transform = `translate(${(dx/(dist||1))*5*inf}px,${(dy/(dist||1))*5*inf}px)`
     })
   })
-
-  const vs = document.querySelector('.vert-seal')
-  if (vs) {
-    const dx2 = mx - w * 0.08, dy2 = my - h * 0.7
-    vs.style.transform = `rotate(${Math.atan2(dy2,dx2)*0.03}deg) translate(${dx2*0.008}px, ${dy2*0.008}px)`
-  }
-
   raf = requestAnimationFrame(track)
 }
 
 async function doLogin() {
-  clicked.value = true
-  setTimeout(() => { clicked.value = false }, 600)
+  clicked.value = true; setTimeout(() => { clicked.value = false }, 600)
   const ok = await formRef.value.validate().catch(() => false)
   if (!ok) { clicked.value = false; return }
   loading.value = true
@@ -199,8 +206,8 @@ onUnmounted(() => { if (raf) cancelAnimationFrame(raf) })
 /* ============================== 场景 ============================== */
 .login-scene {
   height: 100vh;
-  background: radial-gradient(ellipse at 50% 60%, #0e0a14 0%, #06040a 50%, #020106 100%);
-  font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+  background: radial-gradient(ellipse at 50% 65%, #0e0a14 0%, #050308 45%, #020104 100%);
+  font-family: 'Noto Serif SC','STSong','SimSun',serif;
   position: relative; overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   cursor: default;
@@ -208,91 +215,61 @@ onUnmounted(() => { if (raf) cancelAnimationFrame(raf) })
 
 /* ===== 血月 ===== */
 .blood-moon {
-  position: absolute; top: 5%; left: 58%;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle at 45% 40%, rgba(160,30,20,0.5) 0%, rgba(100,15,10,0.2) 35%, transparent 65%);
-  border-radius: 50%; filter: blur(6px);
-  animation: moonBreathe 6s ease-in-out infinite;
+  position: absolute; top: 4%; left: 56%;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle at 45% 40%, rgba(180,30,18,0.55) 0%, rgba(110,12,8,0.2) 38%, transparent 68%);
+  border-radius: 50%; filter: blur(8px);
+  animation: moonPulse 5s ease-in-out infinite;
   pointer-events: none;
-  box-shadow: 0 0 80px rgba(140,20,10,0.15), 0 0 200px rgba(100,10,5,0.08);
+  box-shadow: 0 0 100px rgba(150,20,10,0.12), 0 0 250px rgba(80,8,4,0.06);
 }
-@keyframes moonBreathe {
-  0%,100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.08); }
+@keyframes moonPulse {
+  0%,100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.1); }
 }
 
 /* ===== 远山 ===== */
 .mountains { position: absolute; inset: 0; pointer-events: none; }
-.mt { position: absolute; bottom: 0; opacity: 0.7; width: 0; height: 0; border-bottom-style: solid; }
-.mt-1 { left: -10%; bottom: 18%; border-left: 220px solid transparent; border-right: 320px solid transparent; border-bottom: 180px solid rgba(6,3,10,0.9); }
-.mt-2 { left: 38%; bottom: 16%; border-left: 200px solid transparent; border-right: 120px solid transparent; border-bottom: 220px solid rgba(4,2,8,0.92); }
-.mt-3 { left: -5%; bottom: 13%; border-left: 280px solid transparent; border-right: 380px solid transparent; border-bottom: 130px solid rgba(8,4,12,0.85); }
-.mt-4 { left: 55%; bottom: 20%; border-left: 320px solid transparent; border-right: 180px solid transparent; border-bottom: 150px solid rgba(5,2,9,0.88); }
+.mt { position: absolute; bottom: 0; width: 0; height: 0; border-bottom-style: solid; opacity: 0.75; }
+.mt-1 { left: -10%; bottom: 16%; border-left: 240px solid transparent; border-right: 340px solid transparent; border-bottom: 190px solid rgba(4,2,8,0.92); }
+.mt-2 { left: 35%; bottom: 14%; border-left: 220px solid transparent; border-right: 140px solid transparent; border-bottom: 240px solid rgba(3,1,6,0.94); }
+.mt-3 { left: -5%; bottom: 12%; border-left: 300px solid transparent; border-right: 400px solid transparent; border-bottom: 140px solid rgba(5,3,9,0.88); }
+.mt-4 { left: 52%; bottom: 18%; border-left: 340px solid transparent; border-right: 200px solid transparent; border-bottom: 160px solid rgba(4,2,7,0.9); }
 
 /* ===== 雾气 ===== */
-.ground-fog {
-  position: absolute; bottom: 0; left: 0; right: 0; height: 35%;
-  background: linear-gradient(0deg, rgba(18,12,20,0.55) 0%, rgba(12,8,15,0.25) 45%, transparent 100%);
-  pointer-events: none; animation: fogDrift 10s ease-in-out infinite;
-}
-.fog-2 { bottom: 5%; height: 22%; opacity: 0.4; animation: fogDrift 12s ease-in-out infinite reverse; }
-@keyframes fogDrift {
-  0%,100% { transform: translateX(0); }
-  50% { transform: translateX(3%); }
-}
+.ground-fog { position: absolute; bottom: 0; left: 0; right: 0; height: 38%; background: linear-gradient(0deg, rgba(16,10,18,0.6) 0%, rgba(10,6,13,0.25) 50%, transparent 100%); pointer-events: none; animation: fogDrift 10s ease-in-out infinite; }
+.fog-2 { bottom: 5%; height: 25%; opacity: 0.35; animation: fogDrift 13s ease-in-out infinite reverse; }
+@keyframes fogDrift { 0%,100% { transform: translateX(0); } 50% { transform: translateX(4%); } }
 
-/* ===== 浮灰 ===== */
-.ember {
-  position: absolute; bottom: -10px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(200,140,50,0.35), rgba(140,25,12,0.15));
-  pointer-events: none; z-index: 1;
-  animation: emberFloat linear infinite;
-}
+.ember { position: absolute; bottom: -10px; border-radius: 50%; background: radial-gradient(circle, rgba(190,130,45,0.3), rgba(130,20,10,0.12)); pointer-events: none; z-index: 1; animation: emberFloat linear infinite; }
 @keyframes emberFloat {
   0% { transform: translateY(0) translateX(0) scale(0); opacity: 0; }
-  10% { opacity: 0.5; }
-  50% { opacity: 0.3; transform: translateY(-50vh) translateX(15px) scale(1); }
+  10% { opacity: 0.45; } 50% { opacity: 0.25; transform: translateY(-50vh) translateX(15px) scale(1); }
   100% { transform: translateY(-100vh) translateX(-10px) scale(0); opacity: 0; }
 }
 
-/* ===== 远处鬼火 ===== */
-.will-o-wisp {
-  position: absolute; width: 8px; height: 8px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(100,180,120,0.6), rgba(60,140,80,0.2), transparent);
-  box-shadow: 0 0 12px rgba(80,160,100,0.4), 0 0 30px rgba(60,120,70,0.2);
-  pointer-events: none; z-index: 2;
-  animation: wispFloat 4s ease-in-out infinite;
-}
-@keyframes wispFloat {
-  0%,100% { transform: translateY(0) translateX(0); opacity: 0.3; }
-  25% { transform: translateY(-20px) translateX(8px); opacity: 0.7; }
-  50% { transform: translateY(-8px) translateX(-5px); opacity: 0.2; }
-  75% { transform: translateY(-28px) translateX(-12px); opacity: 0.6; }
-}
+.wisp { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle, rgba(70,160,110,0.5), rgba(40,120,70,0.15), transparent); box-shadow: 0 0 14px rgba(60,140,90,0.35), 0 0 35px rgba(40,100,60,0.15); pointer-events: none; z-index: 2; animation: wispDrift 4s ease-in-out infinite; }
+@keyframes wispDrift { 0%,100% { transform: translateY(0) translateX(0); opacity: 0.25; } 25% { transform: translateY(-22px) translateX(10px); opacity: 0.65; } 50% { transform: translateY(-10px) translateX(-6px); opacity: 0.18; } 75% { transform: translateY(-32px) translateX(-14px); opacity: 0.55; } }
 
 /* ============================== 鬼怪 ============================== */
 .ghost-char { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; pointer-events: none; }
-.char-hei  { left: 5%;  top: 8%; }
-.char-bai  { right: 5%; top: 10%; }
-.char-judge{ left: 7%; top: 55%; }
-.char-imp  { right: 7%; bottom: 18%; }
-
+.char-hei  { left: 4%; top: 6%; } .char-bai  { right: 4%; top: 8%; }
+.char-judge{ left: 6%; top: 52%; } .char-imp  { right: 6%; bottom: 15%; }
 .gc-body { display: flex; flex-direction: column; align-items: center; transform-origin: center 70%; transition: transform 0.06s ease-out; }
 .gc-head { position: relative; width: 52px; height: 52px; border-radius: 50%; margin-bottom: 1px; z-index: 3; }
 .gc-eyes { position: absolute; top: 53%; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; }
 .gc-pupil { display: block; width: 8px; height: 8px; border-radius: 50%; transition: transform 0.04s ease-out; }
 .gold-pupil { background: #ffd700; box-shadow: 0 0 7px rgba(255,215,0,0.6), 0 0 14px rgba(255,180,20,0.3); }
 .dark-pupil { background: #0a0a0f; box-shadow: 0 0 4px rgba(0,0,0,0.8); }
-.imp-pupil { background: #ff4444; box-shadow: 0 0 7px rgba(255,68,68,0.6), 0 0 14px rgba(255,30,30,0.3); }
+.imp-pupil { background: #f44; box-shadow: 0 0 7px rgba(255,68,68,0.6), 0 0 14px rgba(255,30,30,0.3); }
 .gc-robe { position: relative; width: 42px; height: 52px; border-radius: 50% 50% 8px 8px; }
 .robe-belt { position: absolute; top: 10px; left: -2px; right: -2px; height: 4px; background: #5a3a30; border-radius: 1px; }
 .gc-fire { position: absolute; bottom: -6px; width: 36px; height: 10px; background: radial-gradient(ellipse at center, rgba(160,25,15,0.3) 0%, transparent 70%); border-radius: 50%; filter: blur(6px); animation: fireFlick 2.2s ease-in-out infinite; }
 @keyframes fireFlick { 0%,100% { opacity: 0.35; transform: scaleX(1); } 40% { opacity: 0.75; transform: scaleX(1.3); } 70% { opacity: 0.2; transform: scaleX(0.75); } }
 .gc-mist { position: absolute; border-radius: 50%; background: radial-gradient(ellipse, rgba(20,14,10,0.45) 0%, transparent 70%); filter: blur(12px); pointer-events: none; z-index: -1; animation: mistWisp 4s ease-in-out infinite; }
 @keyframes mistWisp { 0%,100% { transform: translateY(0) scale(1); opacity: 0.3; } 50% { transform: translateY(-10px) scale(1.2); opacity: 0.5; } }
-.gc-name { font-size: 11px; color: rgba(170,130,70,0.4); letter-spacing: 2px; margin-top: 8px; font-family: 'ZCOOL XiaoWei', 'STKaiti', serif; }
+.gc-name { font-size: 11px; color: rgba(170,130,70,0.38); letter-spacing: 2px; margin-top: 8px; font-family: 'ZCOOL XiaoWei','STKaiti',serif; }
 
-/* 黑无常 */
 .hei-head { background: radial-gradient(circle at 45% 38%, #3a3035, #1a1015); border: 2px solid #2a2025; }
 .hei-hat { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 17px solid transparent; border-right: 17px solid transparent; border-bottom: 36px solid #1a1018; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
 .hei-hat::after { content: ''; position: absolute; top: -8px; left: -4px; width: 42px; height: 6px; background: #1a1018; border-radius: 2px; }
@@ -300,7 +277,6 @@ onUnmounted(() => { if (raf) cancelAnimationFrame(raf) })
 .robe-hei { background: linear-gradient(180deg, #1c1618, #0f0b10); border: 1px solid #2a2028; }
 .hei-chain { position: absolute; right: -24px; top: 65%; width: 32px; height: 3px; background: repeating-linear-gradient(90deg, #6a5a4a 0px, #6a5a4a 6px, #1a1510 6px, #1a1510 10px); border-radius: 1px; transform: rotate(-18deg); }
 
-/* 白无常 */
 .bai-head { background: radial-gradient(circle at 45% 38%, #ede5da, #c8beb0); border: 2px solid #a09890; }
 .bai-hat { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 17px solid transparent; border-right: 17px solid transparent; border-bottom: 36px solid #ede5da; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35)); }
 .bai-hat::after { content: ''; position: absolute; top: -8px; left: -4px; width: 42px; height: 6px; background: #ede5da; border-radius: 2px; }
@@ -308,7 +284,6 @@ onUnmounted(() => { if (raf) cancelAnimationFrame(raf) })
 .robe-bai { background: linear-gradient(180deg, #ebe4dc, #ccc4b8); border: 1px solid #b0a8a0; }
 .bai-fan { position: absolute; right: -20px; top: 58%; width: 24px; height: 30px; background: #f2ead8; border-radius: 50% 0 0 50%; border: 1px solid #c8b898; transform: rotate(12deg); }
 
-/* 判官 */
 .judge-head { background: radial-gradient(circle at 45% 35%, #c48060, #8a4030); border: 2px solid #6a3028; }
 .judge-hat { position: absolute; top: -26px; left: 50%; transform: translateX(-50%); width: 46px; height: 20px; background: linear-gradient(180deg, #1a1018, #2a1820); border-radius: 3px 3px 0 0; }
 .judge-hat::after { content: ''; position: absolute; left: -12px; right: -12px; top: 5px; height: 2px; background: #3a2a30; }
@@ -316,315 +291,345 @@ onUnmounted(() => { if (raf) cancelAnimationFrame(raf) })
 .robe-judge { background: linear-gradient(180deg, #6e1c1a, #3e0e0c); border: 1px solid #501212; }
 .judge-brush { position: absolute; right: -16px; top: 52%; width: 3px; height: 34px; background: linear-gradient(180deg, #3a2010, #1a0a08, #d4b878); border-radius: 1px; }
 
-/* 小鬼 */
 .imp-head { background: radial-gradient(circle at 45% 35%, #5a7a5a, #2a4a2a); border: 2px solid #1a3a1a; }
 .imp-horns { position: absolute; top: -16px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; }
 .imp-horn { width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 15px solid #3a3a2a; }
-.imp-hl { transform: rotate(-12deg); }
-.imp-hr { transform: rotate(12deg); }
+.imp-hl { transform: rotate(-12deg); } .imp-hr { transform: rotate(12deg); }
 .imp-grin { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 14px; height: 8px; background: #3a5a3a; border-radius: 0 0 50% 50%; }
 .imp-grin::after { content: ''; position: absolute; top: -3px; right: 0; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid #4a3030; }
 .robe-imp { background: linear-gradient(180deg, #3c4c3c, #1c2c1c); border: 1px solid #2a3a2a; }
 
-/* ============================== 石碑卡片 ============================== */
-.tablet-layer {
-  position: relative; z-index: 20;
-  /* 整体倾斜 */
-  transform: rotate(-2.5deg);
-  transition: transform 0.3s ease;
-}
-.tablet-layer:hover {
-  transform: rotate(-2deg);
+/* ============================== 石书主容器 ============================== */
+.book-layer { position: relative; z-index: 20; perspective: 1000px; }
+.book-shadow {
+  position: absolute; inset: 20px -20px -20px -20px;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.55) 0%, transparent 70%);
+  filter: blur(30px); pointer-events: none; z-index: -1;
 }
 
-/* 石碑阴影 */
-.tablet-shadow {
-  position: absolute;
-  inset: 12px -8px -12px -8px;
-  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.5) 0%, transparent 70%);
-  filter: blur(20px);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 石碑主体 */
-.stone-tablet {
+.stone-book {
+  display: flex;
   position: relative;
-  width: 420px;
-  /* 石碑上宽下窄的梯形 */
-  clip-path: polygon(
-    3% 0%, 97% 0%,
-    100% 3%, 100% 97%,
-    95% 100%, 5% 100%,
-    0% 97%, 0% 3%
-  );
-  /* 多层石材纹理 */
+  transform: rotate(-2deg) rotateY(3deg);
+  transition: transform 0.4s ease;
+  filter: drop-shadow(0 12px 50px rgba(0,0,0,0.6));
+}
+.stone-book:hover { transform: rotate(-1.5deg) rotateY(2deg); }
+
+/* ===== 书脊 ===== */
+.book-spine {
+  width: 18px; flex-shrink: 0;
+  background: linear-gradient(90deg, #1a1410 0%, #2a2218 30%, #3a3020 50%, #2a2218 70%, #1a1410 100%);
+  border-left: 2px solid rgba(60,45,25,0.5);
+  border-right: 2px solid rgba(30,20,12,0.6);
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 50px;
+}
+.spine-rivet {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #8a7a5a, #3a2a15);
+  box-shadow: 0 0 4px rgba(0,0,0,0.5), inset 0 1px 2px rgba(0,0,0,0.4);
+}
+
+/* ===== 石页通用 ===== */
+.stone-page {
+  width: 230px; min-height: 440px;
+  position: relative;
+  overflow: hidden;
+  /* 石材基色 + 纸纤维纹理 */
   background:
-    /* 苔藓斑 */
-    radial-gradient(ellipse at 15% 25%, rgba(30,50,25,0.3) 0%, transparent 30%),
-    radial-gradient(ellipse at 85% 70%, rgba(25,40,20,0.25) 0%, transparent 35%),
-    radial-gradient(ellipse at 60% 15%, rgba(35,45,30,0.2) 0%, transparent 25%),
-    /* 石纹 */
-    repeating-linear-gradient(2deg, transparent, transparent 3px, rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px),
-    repeating-linear-gradient(89deg, transparent, transparent 6px, rgba(0,0,0,0.02) 6px, rgba(0,0,0,0.02) 7px),
-    /* 石材基色 */
-    linear-gradient(175deg, #3a3530 0%, #2e2a25 15%, #35312c 30%, #2a2622 50%, #332f2a 70%, #282420 85%, #302c28 100%);
-  box-shadow:
-    0 0 0 2px rgba(20,18,15,0.8),
-    0 0 0 5px rgba(40,36,30,0.4),
-    0 0 0 7px rgba(25,22,18,0.6),
-    0 8px 40px rgba(0,0,0,0.5),
-    inset 0 0 60px rgba(0,0,0,0.15),
-    inset 0 2px 4px rgba(255,255,255,0.03);
+    radial-gradient(ellipse at 20% 30%, rgba(50,40,30,0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 60%, rgba(35,28,20,0.3) 0%, transparent 45%),
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 3px),
+    repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(0,0,0,0.01) 5px, rgba(0,0,0,0.01) 6px),
+    linear-gradient(175deg, #3e3830 0%, #322d26 20%, #3a342e 45%, #2c2722 65%, #36312b 85%, #2a2520 100%);
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.2);
 }
 
-/* 石碑顶部破损 */
-.tablet-break-top {
-  position: absolute; top: -4px; left: 8%; right: 8%; height: 8px;
-  background: linear-gradient(180deg, rgba(30,26,22,0.6), transparent);
-  z-index: 5;
-  border-radius: 2px;
-}
-.tablet-break-top::after {
-  content: ''; position: absolute; top: -2px; left: 15%;
-  width: 70%; height: 4px;
-  background: rgba(40,35,30,0.4);
-  clip-path: polygon(0% 100%, 8% 0%, 20% 60%, 35% 0%, 50% 40%, 65% 0%, 78% 50%, 92% 0%, 100% 100%);
+/* 石质纹理叠加 */
+.page-texture {
+  position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  background:
+    radial-gradient(circle at 15% 25%, rgba(255,255,255,0.02) 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(0,0,0,0.08) 0%, transparent 40%),
+    repeating-linear-gradient(1deg, transparent, transparent 4px, rgba(0,0,0,0.02) 4px, rgba(0,0,0,0.02) 5px);
 }
 
-/* 石碑底部缺损 */
-.tablet-break-bottom {
-  position: absolute; bottom: -2px; left: 10%; right: 10%; height: 6px;
-  background: linear-gradient(0deg, rgba(20,18,14,0.5), transparent);
-  z-index: 5;
+/* ===== 血迹污渍 ===== */
+.page-blood-stain {
+  position: absolute; pointer-events: none; z-index: 2; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(110,12,8,0.18) 0%, rgba(80,6,4,0.08) 50%, transparent 70%);
+  filter: blur(2px);
+}
+.bs-1 { width: 90px; height: 70px; top: 8%; left: 10%; animation: stainPulse 5s ease-in-out infinite; }
+.bs-2 { width: 60px; height: 45px; bottom: 18%; right: 15%; animation: stainPulse 4.5s ease-in-out 1s infinite; }
+.bs-3 { width: 80px; height: 55px; top: 65%; right: 12%; animation: stainPulse 5.5s ease-in-out 2s infinite; }
+@keyframes stainPulse {
+  0%,100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
 }
 
-/* 可交互的表面涂层 */
-.tablet-surface {
-  position: relative; z-index: 1;
-  padding: 40px 48px 34px;
-  /* 石材内部微妙的渐变 */
-  background: radial-gradient(ellipse at 50% 30%, rgba(60,55,48,0.2) 0%, transparent 60%);
+/* ===== 裂缝 ===== */
+.page-crack {
+  position: absolute; pointer-events: none; z-index: 2;
+  background: rgba(20,12,10,0.3);
+}
+.cr-1 { top: 12%; left: 25%; width: 1px; height: 35%; transform: rotate(-15deg); box-shadow: 0 0 2px rgba(0,0,0,0.2); }
+.cr-2 { top: 55%; left: 60%; width: 1px; height: 25%; transform: rotate(8deg); }
+.cr-3 { bottom: 20%; left: 30%; width: 1px; height: 30%; transform: rotate(-5deg); }
+
+/* ===== 左侧页 — 装饰 ===== */
+.page-left {
+  border-right: 1px solid rgba(0,0,0,0.2);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+  padding: 40px 20px;
+  /* 微微的纸页弯曲 */
+  clip-path: polygon(0% 0%, 100% 2%, 100% 98%, 0% 100%);
 }
 
-/* ===== 碑额 ===== */
-.tablet-header { text-align: center; margin-bottom: 28px; }
+/* 左页篆体铭文 */
+.left-inscription {
+  position: relative; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.insc-char {
+  font-family: 'ZCOOL XiaoWei','STKaiti','KaiTi',serif;
+  font-size: 36px; font-weight: 400;
+  color: #4a3a2a;
+  writing-mode: vertical-rl;
+  text-shadow:
+    0 1px 0 rgba(0,0,0,0.6),
+    0 -1px 0 rgba(255,255,255,0.04),
+    0 0 8px rgba(0,0,0,0.3);
+  opacity: 0;
+  animation: charEmerge 0.5s ease both;
+  /* 斑驳 */
+  filter: contrast(0.8) brightness(0.7) saturate(0.5);
+}
+.insc-2 { margin-top: 10px; }
+.insc-2 .insc-char { font-size: 52px; color: #3a2018; }
 
-.tablet-seal {
-  width: 56px; height: 56px; margin: 0 auto 16px;
+@keyframes charEmerge {
+  from { opacity: 0; transform: scale(0.9); filter: blur(3px) contrast(0.8) brightness(0.7) saturate(0.5); }
+  to { opacity: 1; transform: scale(1); filter: blur(0) contrast(0.8) brightness(0.7) saturate(0.5); }
+}
+
+/* 血手印 */
+.blood-handprint {
+  position: relative; z-index: 3;
+  width: 70px; height: 80px;
+  background: radial-gradient(ellipse at 45% 25%, rgba(100,15,10,0.3), rgba(60,6,4,0.12) 40%, transparent 65%);
+  border-radius: 50% 50% 45% 45%;
+  filter: blur(1px);
+  transform: rotate(-10deg);
+  animation: handPulse 4s ease-in-out infinite;
+}
+@keyframes handPulse {
+  0%,100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* ===== 右侧页 — 表单 ===== */
+.page-right {
+  border-left: 1px solid rgba(255,255,255,0.03);
+  clip-path: polygon(0% 2%, 100% 0%, 100% 100%, 0% 98%);
+}
+.page-content {
+  position: relative; z-index: 3;
+  padding: 36px 32px;
+  display: flex; flex-direction: column;
+}
+
+/* 页眉 */
+.page-header-area { text-align: center; margin-bottom: 24px; }
+
+.seal-mark {
+  width: 48px; height: 48px; margin: 0 auto 12px;
+  background: radial-gradient(circle at 40% 35%, #6e1010, #2e0404);
+  clip-path: polygon(50% 0%, 75% 15%, 100% 35%, 100% 70%, 80% 100%, 50% 90%, 20% 100%, 0% 70%, 0% 35%, 25% 15%);
+  box-shadow: 0 0 18px rgba(100,8,5,0.4), inset 0 0 12px rgba(0,0,0,0.5);
+  animation: sealPulse 3s ease-in-out infinite;
   position: relative;
-  background: radial-gradient(circle at 40% 35%, #8a1a18, #3a0808);
-  transform: rotate(3deg);
-  clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 100% 70%, 80% 100%, 50% 95%, 20% 100%, 0% 70%, 0% 35%, 20% 10%);
-  box-shadow: 0 0 20px rgba(120,10,6,0.35), inset 0 0 15px rgba(0,0,0,0.5);
-  animation: sealGlow 3s ease-in-out infinite;
 }
-.tablet-seal::after {
-  content: '印';
+.seal-mark::after {
+  content: '契';
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
   font-family: 'ZCOOL XiaoWei','STKaiti',serif;
-  font-size: 20px; color: rgba(215,165,45,0.7);
-  text-shadow: 0 0 6px rgba(200,140,25,0.3);
-  transform: rotate(-3deg);
+  font-size: 18px; color: rgba(200,145,55,0.65);
+  text-shadow: 0 0 5px rgba(180,120,30,0.25);
 }
-@keyframes sealGlow {
-  0%,100% { box-shadow: 0 0 20px rgba(120,10,6,0.35), inset 0 0 15px rgba(0,0,0,0.5); }
-  50% { box-shadow: 0 0 30px rgba(160,14,10,0.5), inset 0 0 20px rgba(0,0,0,0.6); }
+@keyframes sealPulse {
+  0%,100% { box-shadow: 0 0 18px rgba(100,8,5,0.4), inset 0 0 12px rgba(0,0,0,0.5); }
+  50% { box-shadow: 0 0 28px rgba(140,12,8,0.55), inset 0 0 18px rgba(0,0,0,0.6); }
 }
 
-/* 标题 — 凿刻字体 */
-.tablet-title {
-  display: flex; justify-content: center; gap: 4px;
-  margin: 0 0 6px;
+/* 标题 — 石刻篆体 */
+.book-title {
+  display: flex; justify-content: center; gap: 6px; margin: 0 0 6px;
 }
-.title-char {
+.bt-char {
   font-family: 'ZCOOL XiaoWei','STKaiti','KaiTi',serif;
-  font-size: 34px; font-weight: 400; letter-spacing: 3px;
-  /* 凿刻进石头的凹陷文字效果 */
-  color: #c9a84c;
+  font-size: 30px; font-weight: 400; letter-spacing: 2px;
+  /* 深凿刻入石 + 血色渗出 */
+  color: #b8945c;
   text-shadow:
-    0 1px 0 rgba(0,0,0,0.8),
-    0 2px 0 rgba(0,0,0,0.6),
-    0 -1px 0 rgba(255,255,255,0.08),
-    1px 0 0 rgba(0,0,0,0.4),
-    -1px 0 0 rgba(0,0,0,0.4),
-    0 0 12px rgba(201,168,76,0.25);
-  /* 斑驳效果 — 不均匀的透明度 */
+    /* 凹陷阴影 */
+    0 2px 0 rgba(0,0,0,0.8),
+    0 3px 1px rgba(0,0,0,0.6),
+    0 1px 0 rgba(0,0,0,0.7),
+    /* 受光边缘 */
+    0 -1px 0 rgba(255,255,255,0.06),
+    /* 血色泛光 */
+    0 0 6px rgba(120,15,8,0.2),
+    0 0 15px rgba(90,8,4,0.1);
   opacity: 0;
-  animation: charEmerge 0.6s ease both;
-  filter: brightness(0.9) contrast(1.1);
+  animation: charEmerge 0.5s ease both;
+  filter: contrast(0.9) brightness(0.85) saturate(0.8);
+  position: relative;
 }
-@keyframes charEmerge {
-  from { opacity: 0; transform: translateY(-6px); filter: blur(2px) brightness(0.9) contrast(1.1); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0) brightness(0.9) contrast(1.1); }
-}
-
-.tablet-sub {
-  font-size: 12px; color: rgba(180,145,90,0.35);
-  letter-spacing: 6px; font-family: 'ZCOOL XiaoWei','STKaiti',serif;
-}
-
-/* ===== 表单字段 ===== */
-.tablet-form { display: flex; flex-direction: column; gap: 16px; }
-
-.tablet-field {
-  display: flex; align-items: stretch; gap: 0;
+/* 斑驳效果 — 随机覆盖半透明噪点 */
+.bt-char::after {
+  content: '';
+  position: absolute; inset: -2px;
+  background: radial-gradient(circle at 30% 40%, transparent 60%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+  mix-blend-mode: multiply;
 }
 
-/* 铭文标签 */
-.field-rune {
-  width: 42px; flex-shrink: 0;
+.book-sub {
+  font-size: 11px; color: rgba(150,120,70,0.3);
+  letter-spacing: 5px; font-family: 'ZCOOL XiaoWei','STKaiti',serif;
+}
+
+/* ===== 表单 ===== */
+.book-form { display: flex; flex-direction: column; gap: 14px; }
+
+.stone-field { display: flex; align-items: stretch; }
+
+.sf-rune {
+  width: 38px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   font-family: 'ZCOOL XiaoWei','STKaiti',serif;
-  font-size: 16px; color: rgba(180,145,90,0.35);
-  /* 像刻在石头上的篆体 */
-  background:
-    linear-gradient(180deg, rgba(20,18,14,0.5), rgba(30,26,20,0.5));
-  border: 1px solid rgba(80,65,40,0.2);
+  font-size: 15px;
+  color: rgba(120,90,50,0.3);
+  background: linear-gradient(180deg, rgba(15,12,8,0.5), rgba(25,20,14,0.5));
+  border: 1px solid rgba(70,50,30,0.15);
   border-right: none;
   text-shadow: 0 1px 0 rgba(0,0,0,0.5);
 }
 
-.field-input-zone { flex: 1; position: relative; }
+.sf-input { flex: 1; position: relative; }
 
-.field-input-zone :deep(.el-input__wrapper) {
-  background: rgba(18,15,10,0.6);
-  border: 1px solid rgba(80,65,40,0.2);
-  border-radius: 0;
-  box-shadow: none; padding: 11px 14px;
-  transition: all 0.35s;
+.sf-input :deep(.el-input__wrapper) {
+  background: rgba(14,11,7,0.55);
+  border: 1px solid rgba(70,50,30,0.15);
+  border-radius: 0; box-shadow: none;
+  padding: 10px 12px; transition: all 0.35s;
 }
-.field-input-zone :deep(.el-input__inner) {
-  color: #c0a878;
+.sf-input :deep(.el-input__inner) {
+  color: #b09870;
   font-family: 'Noto Serif SC','STSong',serif;
-  font-size: 14px; letter-spacing: 2px;
+  font-size: 13px; letter-spacing: 2px;
 }
-.field-input-zone :deep(.el-input__inner::placeholder) {
-  color: rgba(140,115,75,0.22); letter-spacing: 1px;
+.sf-input :deep(.el-input__inner::placeholder) {
+  color: rgba(120,90,60,0.2); letter-spacing: 1px;
 }
-.field-input-zone :deep(.el-input__wrapper:hover) {
-  border-color: rgba(140,100,50,0.35);
+.sf-input :deep(.el-input__wrapper:hover) {
+  border-color: rgba(120,80,40,0.3);
 }
-.field-input-zone :deep(.el-input__wrapper.is-focus) {
-  border-color: rgba(195,150,60,0.45);
-  box-shadow: 0 0 12px rgba(180,120,40,0.1), inset 0 0 8px rgba(0,0,0,0.2);
+.sf-input :deep(.el-input__wrapper.is-focus) {
+  border-color: rgba(180,120,50,0.4);
+  box-shadow: 0 0 10px rgba(150,90,30,0.08), inset 0 0 6px rgba(0,0,0,0.15);
 }
-.field-input-zone :deep(.el-input__suffix) { color: rgba(140,115,75,0.2); }
+.sf-input :deep(.el-input__suffix) { color: rgba(120,90,60,0.18); }
 
-/* 石刻划线 */
-.carve-line {
+.sf-carve {
   position: absolute; bottom: 0; left: 4px; right: 4px; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(195,150,60,0.3), transparent);
-  pointer-events: none;
-  animation: carvePulse 1.8s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(170,120,50,0.25), transparent);
+  pointer-events: none; animation: carvePulse 2s ease-in-out infinite;
 }
-@keyframes carvePulse {
-  0%,100% { opacity: 0.3; }
-  50% { opacity: 0.7; }
-}
+@keyframes carvePulse { 0%,100% { opacity: 0.25; } 50% { opacity: 0.65; } }
 
-/* ===== 按钮 — 石雕 ===== */
-.stone-btn {
-  width: 100%; height: 52px; margin-top: 4px;
-  position: relative;
-  border: none; border-radius: 2px;
-  /* 深色石材按钮 */
-  background:
-    linear-gradient(180deg, #3d1816 0%, #24100e 40%, #2a1412 60%, #1a0c0a 100%);
-  color: #d4b868;
+/* ===== 血色按钮 ===== */
+.blood-seal-btn {
+  width: 100%; height: 50px; margin-top: 4px;
+  position: relative; border: none; border-radius: 1px; overflow: hidden;
   cursor: pointer;
+  /* 干涸的血色 */
+  background: linear-gradient(180deg, #4a1214 0%, #2e0a0c 35%, #3a1012 55%, #1e0608 100%);
+  color: #c09058;
   font-family: 'ZCOOL XiaoWei','STKaiti','KaiTi',serif;
-  font-size: 18px; letter-spacing: 8px;
-  overflow: hidden;
+  font-size: 17px; letter-spacing: 6px;
   transition: all 0.3s;
-  /* 玉石质感凹陷 */
-  box-shadow:
-    0 2px 0 rgba(0,0,0,0.4),
-    0 4px 12px rgba(0,0,0,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.04),
-    inset 0 -1px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.03);
 }
-.stone-btn:hover {
-  background: linear-gradient(180deg, #4d201e, #301412, #361614, #200e0c);
-  box-shadow:
-    0 2px 0 rgba(0,0,0,0.4),
-    0 6px 20px rgba(180,30,20,0.2),
-    0 0 40px rgba(140,20,10,0.1),
-    inset 0 1px 0 rgba(255,255,255,0.05),
-    inset 0 -1px 0 rgba(0,0,0,0.3);
+.blood-seal-btn:hover {
+  background: linear-gradient(180deg, #5a1618, #3a0e10, #461416, #2a0a0c);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.4), 0 6px 25px rgba(160,25,18,0.2), 0 0 50px rgba(120,15,8,0.08), inset 0 1px 0 rgba(255,255,255,0.04);
   transform: translateY(-1px);
 }
-.stone-btn:active { transform: scale(0.97); }
-.stone-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.blood-seal-btn:active { transform: scale(0.96); }
+.blood-seal-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-.btn-carve {
+.bsb-text {
   position: relative; z-index: 1;
-  /* 凿刻文字 */
   text-shadow:
     0 1px 0 rgba(0,0,0,0.7),
     0 2px 0 rgba(0,0,0,0.5),
-    0 0 10px rgba(200,140,50,0.25);
+    0 0 8px rgba(180,100,30,0.2);
 }
 
-/* 按钮裂缝纹理 */
-.btn-crack {
-  position: absolute; inset: 0; pointer-events: none; z-index: 0;
-  opacity: 0.25;
-  background:
-    repeating-linear-gradient(88deg, transparent, transparent 4px, rgba(0,0,0,0.12) 4px, rgba(0,0,0,0.12) 5px),
-    repeating-linear-gradient(2deg, transparent, transparent 3px, rgba(255,255,255,0.015) 3px, rgba(255,255,255,0.015) 4px);
+/* 新鲜血液渗出 */
+.bsb-blood {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(200,20,12,0.5), rgba(180,15,10,0.4), transparent);
+  pointer-events: none; z-index: 0;
+  animation: bloodSeep 2s ease-in-out infinite;
+}
+@keyframes bloodSeep {
+  0%,100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
 
-/* 点击涟漪 */
+/* 点击血溅 */
 .pressed::after {
   content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 4px;
-  border: 2px solid rgba(180,25,15,0.25);
-  animation: stoneRipple 0.5s ease both;
+  position: absolute; inset: -10px; border-radius: 3px;
+  border: 2px solid rgba(180,20,10,0.2);
+  animation: bloodRipple 0.45s ease both;
   pointer-events: none;
 }
-@keyframes stoneRipple {
-  0% { transform: scale(0.92); opacity: 1; }
-  100% { transform: scale(1.15); opacity: 0; }
+@keyframes bloodRipple {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.2); opacity: 0; }
 }
 
-/* ===== 底部 ===== */
-.tablet-foot {
-  text-align: center; margin-top: 16px;
-  color: rgba(120,90,55,0.2);
-  font-size: 10px; letter-spacing: 4px;
+/* ===== 页脚 ===== */
+.page-foot {
+  text-align: center; margin-top: 14px;
+  color: rgba(100,70,40,0.18);
+  font-size: 10px; letter-spacing: 3px;
   animation: footBreathe 4s ease-in-out infinite;
 }
-@keyframes footBreathe {
-  0%,100% { opacity: 0.25; }
-  50% { opacity: 0.5; }
-}
+@keyframes footBreathe { 0%,100% { opacity: 0.2; } 50% { opacity: 0.45; } }
 
 /* ============================== 竖排铭文 ============================== */
 .vert-seal {
   position: absolute; bottom: 12%; left: 3%; z-index: 15;
   display: flex; flex-direction: column; align-items: center; gap: 1px;
-  transition: transform 0.08s ease-out; pointer-events: none;
+  pointer-events: none;
 }
-.vs-ch {
-  font-size: 15px; color: rgba(175,130,50,0.3);
-  font-family: 'ZCOOL XiaoWei','STKaiti','KaiTi',serif;
-  text-shadow: 0 0 3px rgba(175,130,35,0.1);
-}
-.vs-dot { color: rgba(90,10,6,0.25); font-size: 9px; }
+.vs-ch { font-size: 15px; color: rgba(150,110,40,0.25); font-family: 'ZCOOL XiaoWei','STKaiti','KaiTi',serif; text-shadow: 0 0 3px rgba(150,110,30,0.08); }
+.vs-dot { color: rgba(80,10,5,0.2); font-size: 9px; }
 
 /* ============================== 响应式 ============================== */
 @media (max-width: 768px) {
-  .char-hei { left: 1%; top: 4%; }
-  .char-bai { right: 1%; top: 6%; }
-  .char-judge { left: 2%; top: 52%; }
-  .char-imp { right: 2%; bottom: 12%; }
-  .stone-tablet { width: 340px; }
-  .tablet-surface { padding: 30px 34px 26px; }
-  .tablet-layer { transform: rotate(-2deg); }
+  .char-hei { left: 1%; top: 3%; } .char-bai { right: 1%; top: 5%; }
+  .char-judge { left: 2%; top: 50%; } .char-imp { right: 2%; bottom: 10%; }
+  .stone-page { width: 160px; min-height: 380px; }
+  .page-content { padding: 24px 20px; }
+  .bt-char { font-size: 22px; }
   .vert-seal { display: none; }
 }
 </style>
