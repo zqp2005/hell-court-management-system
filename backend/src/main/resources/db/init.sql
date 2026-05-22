@@ -161,7 +161,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_code`) VALUES
 
 -- ==================== 默认用户 ====================
 INSERT INTO `user` (`username`, `password`, `real_name`, `role_id`) VALUES
-('admin',    '$2a$10$5/4zzF3YlYPdbkoBNfUO/O8AnElO0l8ozsF2fKzKK8.7wbUGOrBfK', '阎罗王', 4),
-('judge1',   '$2a$10$5/4zzF3YlYPdbkoBNfUO/O8AnElO0l8ozsF2fKzKK8.7wbUGOrBfK', '钟馗',   2),
-('king1',    '$2a$10$5/4zzF3YlYPdbkoBNfUO/O8AnElO0l8ozsF2fKzKK8.7wbUGOrBfK', '秦广王', 3),
-('wuchang1', '$2a$10$5/4zzF3YlYPdbkoBNfUO/O8AnElO0l8ozsF2fKzKK8.7wbUGOrBfK', '黑无常', 1);
+('admin',    '$2a$10$Ntf76DWgc9MKnELgnGohSObBdDdkN3Jm61HRZMYX11ya8HHBi9HpO', '阎罗王', 4),
+('judge1',   '$2a$10$Ntf76DWgc9MKnELgnGohSObBdDdkN3Jm61HRZMYX11ya8HHBi9HpO', '钟馗',   2),
+('king1',    '$2a$10$Ntf76DWgc9MKnELgnGohSObBdDdkN3Jm61HRZMYX11ya8HHBi9HpO', '秦广王', 3),
+('wuchang1', '$2a$10$Ntf76DWgc9MKnELgnGohSObBdDdkN3Jm61HRZMYX11ya8HHBi9HpO', '黑无常', 1);
