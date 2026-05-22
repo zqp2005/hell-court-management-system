@@ -67,10 +67,10 @@
           <div class="page-texture"></div>
           <!-- 左页铭文 -->
           <div class="left-inscription">
-            <span class="insc-char" v-for="(c,i) in '陰陽生死'" :key="i" :style="{ animationDelay: i*0.1+'s' }">{{ c }}</span>
+            <span class="insc-char" v-for="(c,i) in '陰陽生死'" :key="i" :style="{ transform: 'rotate('+[-6,8,-10,5][i]+'deg)', animationDelay: i*0.15+'s' }">{{ c }}</span>
           </div>
           <div class="left-inscription insc-2">
-            <span class="insc-char" v-for="(c,i) in '簿'" :key="'b'+i" :style="{ animationDelay: (i+6)*0.1+'s' }">{{ c }}</span>
+            <span class="insc-char insc-big" :style="{ transform: 'rotate(-4deg)', animationDelay: '0.8s' }">簿</span>
           </div>
           <!-- 血手印 -->
           <div class="blood-handprint"></div>
@@ -387,32 +387,61 @@ onUnmounted(() => { if (raf) cancelAnimationFrame(raf) })
   clip-path: polygon(0% 0%, 100% 2%, 100% 98%, 0% 100%);
 }
 
-/* 左页篆体铭文 */
+/* 左页血色铭文 — 扭曲狂草 */
 .left-inscription {
   position: relative; z-index: 3;
-  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
 }
 .insc-char {
   font-family: 'ZCOOL XiaoWei','STKaiti','KaiTi',serif;
-  font-size: 36px; font-weight: 400;
-  color: #4a3a2a;
+  font-size: 44px; font-weight: 400;
+  color: #8a1015;
   writing-mode: vertical-rl;
+  /* 血色多层光晕 */
   text-shadow:
-    0 1px 0 rgba(0,0,0,0.6),
-    0 -1px 0 rgba(255,255,255,0.04),
-    0 0 8px rgba(0,0,0,0.3);
+    0 0 10px rgba(140,15,20,0.6),
+    0 0 25px rgba(120,8,12,0.35),
+    0 0 40px rgba(100,5,8,0.2),
+    0 2px 3px rgba(0,0,0,0.5),
+    0 -1px 0 rgba(255,80,60,0.15);
   opacity: 0;
-  animation: charEmerge 0.5s ease both;
-  /* 斑驳 */
-  filter: contrast(0.8) brightness(0.7) saturate(0.5);
+  animation: bloodCharEmerge 0.6s ease both;
+  filter: contrast(1.2) brightness(0.85) saturate(1.5);
+  position: relative;
 }
-.insc-2 { margin-top: 10px; }
-.insc-2 .insc-char { font-size: 52px; color: #3a2018; }
+/* 每个字底部渗血 */
+.insc-char::after {
+  content: '';
+  position: absolute; bottom: -4px; left: 20%; right: 20%; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(160,20,15,0.5), rgba(180,25,15,0.3), transparent);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: bloodDripChar 2.5s ease-in-out infinite;
+}
+.insc-big {
+  font-size: 62px;
+  text-shadow:
+    0 0 15px rgba(160,18,22,0.7),
+    0 0 35px rgba(130,10,14,0.4),
+    0 0 55px rgba(100,5,8,0.25),
+    0 3px 4px rgba(0,0,0,0.5),
+    0 -2px 0 rgba(255,80,50,0.18);
+}
+.insc-big::after {
+  bottom: -6px; height: 5px;
+  background: linear-gradient(90deg, transparent, rgba(180,20,15,0.6), rgba(200,30,18,0.4), transparent);
+}
 
-@keyframes charEmerge {
-  from { opacity: 0; transform: scale(0.9); filter: blur(3px) contrast(0.8) brightness(0.7) saturate(0.5); }
-  to { opacity: 1; transform: scale(1); filter: blur(0) contrast(0.8) brightness(0.7) saturate(0.5); }
+@keyframes bloodCharEmerge {
+  from { opacity: 0; transform: scale(0.85); filter: blur(4px) contrast(1.2) brightness(0.85) saturate(1.5); }
+  to { opacity: 1; transform: scale(1); filter: blur(0) contrast(1.2) brightness(0.85) saturate(1.5); }
 }
+@keyframes bloodDripChar {
+  0%,100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 0.8; transform: translateY(3px); }
+}
+.insc-2 { margin-top: 12px; }
+.insc-2 .insc-char { font-size: 62px; color: #a01218; }
 
 /* 血手印 */
 .blood-handprint {
