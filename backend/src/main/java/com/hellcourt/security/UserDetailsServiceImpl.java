@@ -1,6 +1,7 @@
 package com.hellcourt.security;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.hellcourt.common.constant.SystemConstant;
 import com.hellcourt.entity.Role;
 import com.hellcourt.entity.RolePermission;
 import com.hellcourt.entity.User;
@@ -31,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
-        if (user.getStatus() == 0) {
+        if (user.getStatus() == SystemConstant.USER_STATUS_DISABLED) {
             throw new UsernameNotFoundException("用户已被禁用");
         }
 

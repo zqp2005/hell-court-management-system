@@ -1,6 +1,7 @@
 package com.hellcourt.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.hellcourt.dto.export.RebirthExportDTO;
 import com.hellcourt.dto.request.RebirthRequest;
 import com.hellcourt.entity.Rebirth;
 
@@ -10,4 +11,5 @@ public interface RebirthService {
     IPage<Rebirth> page(int page, int size);
     List<Rebirth> listAll();
     void create(RebirthRequest request, Long operatorId);
+    List<RebirthExportDTO> exportRebirths();
 }

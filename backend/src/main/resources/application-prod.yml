@@ -1,0 +1,12 @@
+logging:
+  level:
+    com.hellcourt: WARN
+
+knife4j:
+  enable: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health

@@ -1,0 +1,9 @@
+export const ROLE = { WUCHANG: 'WUCHANG', JUDGE: 'JUDGE', KING: 'KING', ADMIN: 'ADMIN' }
+
+export const SOUL_STATUS = { PENDING: 0, ARRIVED: 1, JUDGING: 2, JUDGED: 3, REBIRTH: 4 }
+
+export const JUDGMENT_STATUS = { PENDING: 0, APPROVED: 1, REJECTED: 2 }
+
+export const REVIEW_RESULT = { PASS: 1, REJECT: 2 }
+
+export const GENDER = { MALE: 0, FEMALE: 1 }

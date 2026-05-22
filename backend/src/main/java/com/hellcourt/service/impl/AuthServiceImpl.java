@@ -34,4 +34,11 @@ public class AuthServiceImpl implements AuthService {
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), user.getRoleId(), roleCode);
         return new LoginResponse(token, UserInfoResponse.from(user, role));
     }
+
+    @Override
+    public UserInfoResponse getCurrentUser(Long userId) {
+        User user = userMapper.selectById(userId);
+        Role role = roleMapper.selectById(user.getRoleId());
+        return UserInfoResponse.from(user, role);
+    }
 }

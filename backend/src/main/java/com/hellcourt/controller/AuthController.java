@@ -5,10 +5,6 @@ import com.hellcourt.common.result.ApiResponse;
 import com.hellcourt.dto.request.LoginRequest;
 import com.hellcourt.dto.response.LoginResponse;
 import com.hellcourt.dto.response.UserInfoResponse;
-import com.hellcourt.entity.Role;
-import com.hellcourt.entity.User;
-import com.hellcourt.mapper.RoleMapper;
-import com.hellcourt.mapper.UserMapper;
 import com.hellcourt.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -21,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
-    private final UserMapper userMapper;
-    private final RoleMapper roleMapper;
 
     @PostMapping("/login")
     @Operation(summary = "用户登录")
@@ -35,8 +29,6 @@ public class AuthController {
     @Operation(summary = "获取当前用户信息")
     public ApiResponse<UserInfoResponse> info(Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
-        User user = userMapper.selectById(userId);
-        Role role = roleMapper.selectById(user.getRoleId());
-        return ApiResponse.success(UserInfoResponse.from(user, role));
+        return ApiResponse.success(authService.getCurrentUser(userId));
     }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hellcourt.common.annotation.OpLog;
+import com.hellcourt.common.constant.SystemConstant;
 import com.hellcourt.common.exception.BusinessException;
 import com.hellcourt.dto.request.SoulPageRequest;
 import com.hellcourt.dto.request.SoulRequest;
@@ -55,7 +56,7 @@ public class SoulServiceImpl implements SoulService {
         soul.setGender(request.getGender());
         soul.setBirthDate(request.getBirthDate());
         soul.setDeathDate(request.getDeathDate());
-        soul.setSoulStatus(0);
+        soul.setSoulStatus(SystemConstant.SOUL_STATUS_PENDING);
         if (request.getBirthDate() != null && request.getDeathDate() != null) {
             long years = ChronoUnit.YEARS.between(request.getBirthDate(), request.getDeathDate());
             soul.setLifespan((int) years);
@@ -89,7 +90,7 @@ public class SoulServiceImpl implements SoulService {
     public void updateStatus(Long id, Integer status, Long userId) {
         Soul soul = getById(id);
         soul.setSoulStatus(status);
-        if (status == 1) {
+        if (status == SystemConstant.SOUL_STATUS_ARRIVED) {
             soul.setArrivalDate(LocalDateTime.now());
         }
         soulMapper.updateById(soul);

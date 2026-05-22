@@ -14,6 +14,7 @@ import com.hellcourt.mapper.SoulMapper;
 import com.hellcourt.service.JudgmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +32,7 @@ public class JudgmentServiceImpl implements JudgmentService {
 
     @Override
     @OpLog(action = "录入审判", targetType = "judgment")
+    @Transactional
     public void create(JudgmentRequest request, Long judgeId) {
         Soul soul = soulMapper.selectById(request.getSoulId());
         if (soul == null) throw new BusinessException("魂魄不存在");

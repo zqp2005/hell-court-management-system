@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hellcourt.common.annotation.OpLog;
+import com.hellcourt.common.constant.SystemConstant;
+import com.hellcourt.common.exception.BusinessException;
 import com.hellcourt.dto.request.UserRequest;
 import com.hellcourt.entity.User;
 import com.hellcourt.mapper.UserMapper;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRealName(request.getRealName());
         user.setRoleId(request.getRoleId());
-        user.setStatus(1);
+        user.setStatus(SystemConstant.USER_STATUS_ENABLED);
         userMapper.insert(user);
     }
 
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
     @OpLog(action = "修改用户", targetType = "user")
     public void update(Long id, UserRequest request) {
         User user = userMapper.selectById(id);
-        if (user == null) throw new RuntimeException("用户不存在");
+        if (user == null) throw new BusinessException("用户不存在");
         user.setRealName(request.getRealName());
         user.setRoleId(request.getRoleId());
         if (request.getStatus() != null) user.setStatus(request.getStatus());

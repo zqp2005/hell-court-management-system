@@ -7,6 +7,9 @@
     <div class="content-card">
       <el-table :data="tableData" border stripe v-loading="loading" class="dark-table"
         header-cell-class-name="table-header" cell-class-name="table-cell">
+        <template #empty>
+          <div class="empty-state"><span class="empty-icon">📜</span><span class="empty-text">暂无操作记录</span></div>
+        </template>
         <el-table-column prop="id" label="ID" width="70" />
         <el-table-column prop="userId" label="操作人" width="80" />
         <el-table-column prop="action" label="操作" width="150" />
@@ -48,16 +51,4 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.page-header { margin-bottom: 20px; }
-.page-title { font-size: 22px; color: #ffd700; letter-spacing: 4px; }
-.page-desc { font-size: 12px; color: #666; letter-spacing: 2px; margin-top: 4px; }
-.content-card { background: #1a1a2e; border: 1px solid #2a2a3e; border-radius: 12px; padding: 20px; }
-.dark-table :deep(.table-header) { background: #0a0a0f !important; color: #ffd700; }
-.dark-table :deep(.table-cell) { background: rgba(26,26,46,0.8); color: #ccc; }
-.dark-table :deep(.el-table__row:hover td) { background: rgba(255,215,0,0.05) !important; }
-.dark-table :deep(.el-table--border) { border-color: #2a2a3e; }
-.dark-table :deep(.el-table__body) { background: transparent; }
-.pagination { margin-top: 16px; display: flex; justify-content: flex-end; }
-.pagination :deep(.el-pager li) { background: #0a0a0f; color: #888; }
-.pagination :deep(.el-pager li.active) { background: #8b0000; color: #ffd700; }
 </style>

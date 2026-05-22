@@ -16,6 +16,7 @@ import com.hellcourt.mapper.SoulMapper;
 import com.hellcourt.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @OpLog(action = "复核审批", targetType = "judgment")
+    @Transactional
     public void approve(ReviewRequest request, Long kingId) {
         Judgment judgment = judgmentMapper.selectById(request.getJudgmentId());
         if (judgment == null) throw new BusinessException("审判记录不存在");
@@ -50,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
         if (soul != null) {
             soul.setSoulStatus(SystemConstant.SOUL_STATUS_JUDGED);
             soul.setGoodDeeds(request.getResult() == SystemConstant.REVIEW_PASS ?
-                    soul.getGoodDeeds() + 100 : soul.getGoodDeeds());
+                    soul.getGoodDeeds() + SystemConstant.GOOD_DEEDS_REVIEW_BONUS : soul.getGoodDeeds());
             soulMapper.updateById(soul);
         }
 

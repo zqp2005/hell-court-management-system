@@ -25,4 +25,9 @@ public interface SystemConstant {
     int REBIRTH_ANIMAL = 4;
     int REBIRTH_HUNGRY = 5;
     int REBIRTH_HELL = 6;
+
+    int GOOD_DEEDS_REVIEW_BONUS = 100;
+
+    int USER_STATUS_ENABLED = 1;
+    int USER_STATUS_DISABLED = 0;
 }

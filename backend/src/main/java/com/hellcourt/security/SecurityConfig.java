@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -24,6 +25,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .headers(headers -> headers
+                        .xssProtection(xss -> xss.headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK))
+                        .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'"))
+                        .frameOptions(fo -> fo.deny())
+                        .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000)))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/doc.html",
                                 "/v3/api-docs/**", "/swagger-ui/**", "/webjars/**").permitAll()
@@ -44,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/rebirths").hasAuthority("rebirth:assign")
                         .requestMatchers("/api/users/**").hasAuthority("user:manage")
                         .requestMatchers("/api/logs/**").hasAuthority("log:view")
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
