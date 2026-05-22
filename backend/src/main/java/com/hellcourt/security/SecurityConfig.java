@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/doc.html",
                                 "/v3/api-docs/**", "/swagger-ui/**", "/webjars/**").permitAll()
-                        .requestMatchers("/api/dashboard/**", "/api/hell-layers/**").authenticated()
+                        .requestMatchers("/api/dashboard/**", "/api/hell-layers/**", "/api/demons/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/souls", "/api/souls/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/souls").hasAuthority("soul:write")
                         .requestMatchers(HttpMethod.PUT, "/api/souls/*/status").hasAuthority("soul:summon")
